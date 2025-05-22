@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Family FaceTime Poll</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #fff;
+            color: #000;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .day-button {
+            display: block;
+            width: 90%;
+            font-size: 2rem;
+            padding: 20px;
+            margin: 10px auto;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+        
+        .day-button.selected {
+            background: #28a745;
+        }
+        
+        #submit {
+            margin-top: 30px;
+            background: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Pick Your Days</h1>
+
+    <button class="day-button">Monday 9 PM EST</button>
+    <button class="day-button">Tuesday 9 PM EST</button>
+    <button class="day-button">Wednesday 9 PM EST</button>
+    <button class="day-button">Thursday 9 PM EST</button>
+    <button class="day-button">Friday 9 PM EST</button>
+    <button class="day-button">Saturday 9 PM EST</button>
+    <button class="day-button">Sunday 9 PM EST</button>
+
+    <button id="submit" class="day-button">Submit</button>
+
+    <script>
+        const buttons = document.querySelectorAll('.day-button:not(#submit)');
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                button.classList.toggle('selected');
+            });
+        });
+
+        document.getElementById('submit').addEventListener('click', () => {
+            const selected = [...buttons].filter(b => b.classList.contains('selected')).map(b => b.innerText);
+            alert("You selected: " + selected.join(", "));
+            // You could replace this alert with a real submission to a backend
+        });
+    </script>
+</body>
+
+</html>
