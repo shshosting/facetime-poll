@@ -44,22 +44,33 @@
             color: rgb(255, 255, 255);
         }
     </style>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"; import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js"; const firebaseConfig = { apiKey: "AIzaSyBH8N13URjjNtXOe_nyRw5GE2pkkttnw4I",
+        authDomain: "family-facetime.firebaseapp.com", projectId: "family-facetime", storageBucket: "family-facetime.firebasestorage.app", messagingSenderId: "135330273106", appId: "1:135330273106:web:ec45454b32a54adbc44c8b" }; const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app); // Expose db for later use window.db = db; window.set = set; window.ref = ref; window.onValue = onValue;
+    </script>
 </head>
 
 <body>
     <h1>9:00 PM Toronto Time</h1>
 
-    <button class="day-button">Monday</button>
-    <button class="day-button">Tuesday</button>
-    <button class="day-button">Wednesday</button>
-    <button class="day-button">Thursday</button>
-    <button class="day-button">Friday</button>
-    <button class="day-button">Saturday</button>
-    <button class="day-button">Sunday</button>
+    <button class="day-button">MON</button>
+    <button class="day-button">TUE</button>
+    <button class="day-button">WED</button>
+    <button class="day-button">THURS</button>
+    <button class="day-button">FRI</button>
+    <button class="day-button">SAT</button>
+    <button class="day-button">SUN</button>
 
     <button id="submit" class="day-button">SUBMIT</button>
+    <div id="summary" style="margin-top: 40px; text-align: left;"></div>
 
     <script>
+        // Get the user's name from the URL, like ?user=Andrea
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get("user") || "Unknown";
+
         const buttons = document.querySelectorAll('.day-button:not(#submit)');
         buttons.forEach(button => {
             button.addEventListener('click', () => {
@@ -69,8 +80,49 @@
 
         document.getElementById('submit').addEventListener('click', () => {
             const selected = [...buttons].filter(b => b.classList.contains('selected')).map(b => b.innerText);
-            alert("You selected: " + selected.join(", "));
-            // You could replace this alert with a real submission to a backend
+            const dbRef = ref(window.db, "responses/" + name);
+            window.set(dbRef, {
+                    name: name,
+                    days: selected,
+                    timestamp: Date.now()
+                })
+                .then(() => {
+                    alert("Thanks " + name + "! Your response has been saved.");
+                })
+                .catch((error) => {
+                    alert("Error: " + error.message);
+                });
+        });
+
+        window.onValue(ref(window.db, "responses"), (snapshot) => {
+            const data = snapshot.val();
+            const dayCounts = {
+                MON: 0,
+                TUE: 0,
+                WED: 0,
+                THURS: 0,
+                FRI: 0,
+                SAT: 0,
+                SUN: 0
+            };
+
+            if (data) {
+                Object.values(data).forEach(entry => {
+                    entry.days.forEach(day => {
+                        if (dayCounts[day] !== undefined) {
+                            dayCounts[day]++;
+                        }
+                    });
+                });
+            }
+
+            let summaryHtml = "<h2>Summary of Availability</h2><ul>";
+            for (const day in dayCounts) {
+                summaryHtml += `<li><strong>${day}</strong>: ${dayCounts[day]} available</li>`;
+            }
+            summaryHtml += "</ul>";
+
+            document.getElementById("summary").innerHTML = summaryHtml;
         });
     </script>
 </body>
