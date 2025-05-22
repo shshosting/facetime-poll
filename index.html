@@ -104,42 +104,34 @@
             });
             
             onValue(ref(db, "responses"), snapshot => {
-              const data = snapshot.val();
-              const dayCounts = {
-                MON: 0,
-                TUE: 0,
-                WED: 0,
-                THURS: 0,
-                FRI: 0,
-                SAT: 0,
-                SUN: 0
-              };
-
-              if (data) {
-                Object.values(data).forEach(entry => {
-                  entry.days.forEach(day => {
-                    if (dayCounts[day] !== undefined) {
-                      dayCounts[day]++;
-                    }
-                  });
-                });
-              }
-
-              // Update the text on each button
-              buttons.forEach(button => {
-                const day = button.innerText.replace(/\s*\(\d+\)$/, ''); // remove existing count if any
-                if (dayCounts[day] !== undefined) {
-                  button.innerText = `${day} (${dayCounts[day]})`;
+                const data = snapshot.val();
+                const dayCounts = {
+                    MON: 0,
+                    TUE: 0,
+                    WED: 0,
+                    THURS: 0,
+                    FRI: 0,
+                    SAT: 0,
+                    SUN: 0 
+                };
+                
+                if (data) {
+                    Object.values(data).forEach(entry => {
+                        entry.days.forEach(day => {
+                            if (dayCounts[day] !== undefined) {
+                                dayCounts[day]++;
+                            }
+                        });
+                    });
                 }
-              });
-
-              let summaryHtml = "<h2>Summary of Availability</h2><ul>";
-              for (const day in dayCounts) {
-                summaryHtml += `<li><strong>${day}</strong>: ${dayCounts[day]} available</li>`;
-              }
-              summaryHtml += "</ul>";
-              document.getElementById("summary").innerHTML = summaryHtml;
-            });
+                
+                let summaryHtml = "<h2>Summary of Availability</h2><<ul>";
+                for (const day in dayCounts) {
+                    summaryHtml += `<li><strong>${day}</strong>: ${dayCounts[day]} available</li>`;
+                }
+                summaryHtml += "</ul>";
+                document.getElementById("summary").innerHTML = summaryHtml;
+                });
     </script>
 </body>
 
