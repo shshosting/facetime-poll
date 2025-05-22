@@ -22,39 +22,42 @@
         .day-button {
             display: block;
             width: 90%;
-            font-size: 2rem;
-            padding: 20px;
-            margin: 10px auto;
-            background: #007bff;
-            color: white;
+            font-size: 5rem;
+            padding: 15px;
+            margin: 15px auto;
+            background: #c4e1ff;
+            color: rgb(0, 0, 0);
             border: none;
             border-radius: 12px;
             cursor: pointer;
         }
         
         .day-button.selected {
-            background: #28a745;
+            background: #0d00ff;
+            color: rgb(255, 255, 255);
         }
         
         #submit {
             margin-top: 30px;
+            font-size: 4rem;
             background: #000;
+            color: rgb(255, 255, 255);
         }
     </style>
 </head>
 
 <body>
-    <h1>Pick Your Days</h1>
+    <h1>9:00 PM Toronto Time</h1>
 
-    <button class="day-button">Monday 9 PM EST</button>
-    <button class="day-button">Tuesday 9 PM EST</button>
-    <button class="day-button">Wednesday 9 PM EST</button>
-    <button class="day-button">Thursday 9 PM EST</button>
-    <button class="day-button">Friday 9 PM EST</button>
-    <button class="day-button">Saturday 9 PM EST</button>
-    <button class="day-button">Sunday 9 PM EST</button>
+    <button class="day-button">Monday</button>
+    <button class="day-button">Tuesday</button>
+    <button class="day-button">Wednesday</button>
+    <button class="day-button">Thursday</button>
+    <button class="day-button">Friday</button>
+    <button class="day-button">Saturday</button>
+    <button class="day-button">Sunday</button>
 
-    <button id="submit" class="day-button">Submit</button>
+    <button id="submit" class="day-button">SUBMIT</button>
 
     <script>
         const buttons = document.querySelectorAll('.day-button:not(#submit)');
