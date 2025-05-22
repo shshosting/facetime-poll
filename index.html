@@ -46,9 +46,9 @@
     </style>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"; import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js"; const firebaseConfig = { apiKey: "AIzaSyBH8N13URjjNtXOe_nyRw5GE2pkkttnw4I",
-        authDomain: "family-facetime.firebaseapp.com", projectId: "family-facetime", storageBucket: "family-facetime.firebasestorage.app", messagingSenderId: "135330273106", appId: "1:135330273106:web:ec45454b32a54adbc44c8b" }; const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app); // Expose db for later use window.db = db; window.set = set; window.ref = ref; window.onValue = onValue;
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js"; import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js"; const firebaseConfig = { apiKey: "AIzaSyBH8N13URjjNtXOe_nyRw5GE2pkkttnw4I",
+        authDomain: "family-facetime.firebaseapp.com", databaseURL: "https://family-facetime-default-rtdb.firebaseio.com", projectId: "family-facetime", storageBucket: "family-facetime.firebasestorage.app", messagingSenderId: "135330273106", appId: "1:135330273106:web:ec45454b32a54adbc44c8b"
+        }; const app = initializeApp(firebaseConfig); const db = getDatabase(app); // Expose db for later use window.db = db; window.set = set; window.ref = ref; window.onValue = onValue;
     </script>
 </head>
 
