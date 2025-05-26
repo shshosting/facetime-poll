@@ -131,33 +131,56 @@
             
             onValue(ref(db, "responses"), snapshot => {
                 const data = snapshot.val();
-                const dayCounts = {
-                    MON: 0,
-                    TUE: 0,
-                    WED: 0,
-                    THURS: 0,
-                    FRI: 0,
-                    SAT: 0,
-                    SUN: 0 
+                const dayUsers = {
+                    MON: [],
+                    TUE: [],
+                    WED: [],
+                    THURS: [],
+                    FRI: [],
+                    SAT: [],
+                    SUN: []
                 };
-                
+
                 if (data) {
                     Object.values(data).forEach(entry => {
                         if (entry.weekId === weekId) {
                             entry.days.forEach(day => {
-                                if (dayCounts[day] !== undefined) {
-                                    dayCounts[day]++;
+                                if (dayUsers[day]) {
+                                    dayUsers[day].push(entry.name);
                                 }
                             });
                         }
                     });
                 }
-                
+
                 let summaryHtml = "<h2>Summary of Availability</h2><ul>";
-                for (const day in dayCounts) {
-                    summaryHtml += `<li><strong>${day}</strong>: ${dayCounts[day]} available</li>`;
+                for (const day in dayUsers) {
+                    const names = dayUsers[day];
+                    summaryHtml += `<li><strong>${day}</strong>: ${names.length > 0 ? names.join(', ') : 'No responses yet'}</li>`;
                 }
                 summaryHtml += "</ul>";
+
+                // Maintain missing users section
+                const expectedUsers = ["Mom", "Dad", "Derek", "Steve"];
+                const respondedUsers = new Set();
+
+                if (data) {
+                    Object.values(data).forEach(entry => {
+                        if (entry.weekId === weekId) {
+                            respondedUsers.add(entry.name);
+                        }
+                    });
+                }
+
+                const missingUsers = expectedUsers.filter(user => !respondedUsers.has(user));
+                if (missingUsers.length > 0) {
+                    summaryHtml += "<h3>Waiting for responses from:</h3><ul>";
+                    missingUsers.forEach(user => {
+                        summaryHtml += `<li>${user}</li>`;
+                    });
+                    summaryHtml += "</ul>";
+                }
+
                 document.getElementById("summary").innerHTML = summaryHtml;
                 });
     </script>
